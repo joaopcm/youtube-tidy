@@ -12,6 +12,7 @@ const DEFAULT_SETTINGS = {
   hideShelves: true,
   hideChips: true,
   trimSidebar: true,
+  compactRecommendations: true,
   skipSponsor: true,
   skipSelfpromo: false,
   skipInteraction: false,

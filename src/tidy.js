@@ -1,16 +1,17 @@
 const UNWANTED_SHELF_TITLES = ["YouTube Playables", "Explore more topics"];
 
-const HIDE_SETTING_ATTRIBUTES = {
+const SETTING_ATTRIBUTES = {
   hideShorts: "yt-tidy-hide-shorts",
   hideShelves: "yt-tidy-hide-shelves",
   hideChips: "yt-tidy-hide-chips",
   trimSidebar: "yt-tidy-trim-sidebar",
+  compactRecommendations: "yt-tidy-compact-recommendations",
 };
 
 let redirectShorts = DEFAULT_SETTINGS.hideShorts;
 
 function applySettings(settings) {
-  for (const [setting, attribute] of Object.entries(HIDE_SETTING_ATTRIBUTES)) {
+  for (const [setting, attribute] of Object.entries(SETTING_ATTRIBUTES)) {
     if (setting in settings) document.documentElement.toggleAttribute(attribute, settings[setting]);
   }
   if ("itemsPerRow" in settings) {

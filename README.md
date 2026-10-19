@@ -3,6 +3,7 @@
 Chrome extension that cleans up YouTube for me. everything below is a switch in the popup.
 
 - homepage grid shows 6 videos per row (smaller thumbnails)
+- recommendations next to the video use 168px thumbnails instead of ~270px
 - hides Shorts everywhere: shelves, grid items, search results, channel tab. `/shorts/ID` links open as `/watch?v=ID`
 - hides the "YouTube Playables" and "Explore more topics" shelves
 - hides the topic chips above the homepage grid

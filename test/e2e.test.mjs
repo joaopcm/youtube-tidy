@@ -116,6 +116,17 @@ test("collapsed sidebar keeps only Home and You", async () => {
   assert.deepEqual(hrefs.sort(), ["/", "/feed/you"]);
 });
 
+test("recommendations next to the video use small thumbnails", async () => {
+  await open(`https://www.youtube.com/watch?v=${SPONSOR_AT_START_VIDEO_ID}`);
+  const widths = await page.evaluate(() =>
+    [...document.querySelectorAll("#secondary .ytLockupViewModelHorizontal yt-thumbnail-view-model")]
+      .filter((thumbnail) => thumbnail.offsetParent)
+      .map((thumbnail) => Math.round(thumbnail.getBoundingClientRect().width)),
+  );
+  assert.ok(widths.length, "no horizontal lockup thumbnails in #secondary, the selector is stale");
+  for (const width of widths) assert.equal(width, 168);
+});
+
 test("Shorts links open in the normal player", async () => {
   await open("https://www.youtube.com/@mkbhd/shorts");
   const shortsHref = await page.getAttribute('a[href^="/shorts/"]', "href");
