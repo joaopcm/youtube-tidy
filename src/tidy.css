@@ -1,0 +1,62 @@
+ytd-rich-grid-renderer {
+  --ytd-rich-grid-items-per-row: var(--yt-tidy-items-per-row, 6) !important;
+  --ytd-rich-grid-posts-per-row: var(--yt-tidy-items-per-row, 6) !important;
+}
+
+ytd-rich-grid-row,
+ytd-rich-grid-row > #contents {
+  display: contents !important;
+}
+
+ytd-rich-item-renderer[rendered-from-rich-grid][is-in-first-column] {
+  margin-left: calc(var(--ytd-rich-grid-item-margin) / 2) !important;
+}
+
+[yt-tidy-hidden],
+ytd-rich-shelf-renderer[is-shorts],
+ytd-rich-section-renderer:has(ytd-rich-shelf-renderer[is-shorts]),
+ytd-rich-section-renderer:has(ytm-shorts-lockup-view-model),
+ytd-rich-section-renderer:has(a[href^="/playables"]),
+ytd-reel-shelf-renderer,
+grid-shelf-view-model:has(ytm-shorts-lockup-view-model),
+ytm-shorts-lockup-view-model,
+ytd-rich-item-renderer:has(a[href^="/shorts/"]),
+ytd-video-renderer:has(a[href^="/shorts/"]),
+ytd-grid-video-renderer:has(a[href^="/shorts/"]),
+ytd-compact-video-renderer:has(a[href^="/shorts/"]),
+yt-lockup-view-model:has(a[href^="/shorts/"]),
+ytd-guide-entry-renderer:has(a[title="Shorts"]),
+ytd-guide-entry-renderer:has(a[href^="/playables"]),
+ytd-mini-guide-entry-renderer[aria-label="Shorts"],
+yt-tab-shape[tab-title="Shorts"] {
+  display: none !important;
+}
+
+.yt-tidy-segments {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 40;
+}
+
+.yt-tidy-segment {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  background: #00d400;
+  opacity: 0.85;
+}
+
+.yt-tidy-toast {
+  position: absolute;
+  left: 12px;
+  bottom: 64px;
+  z-index: 70;
+  padding: 6px 10px;
+  border-radius: 4px;
+  background: rgba(0, 0, 0, 0.75);
+  color: #fff;
+  font: 500 13px Roboto, Arial, sans-serif;
+  pointer-events: none;
+  transition: opacity 200ms ease-out;
+}

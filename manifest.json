@@ -1,0 +1,16 @@
+{
+  "manifest_version": 3,
+  "name": "YouTube Tidy",
+  "version": "0.1.0",
+  "description": "Denser homepage grid, no Shorts/Playables/topic shelves, auto-skip creator sponsor segments.",
+  "permissions": ["storage"],
+  "action": { "default_popup": "src/popup.html" },
+  "content_scripts": [
+    {
+      "matches": ["https://www.youtube.com/*"],
+      "css": ["src/tidy.css"],
+      "js": ["src/settings.js", "src/tidy.js", "src/sponsors.js"],
+      "run_at": "document_start"
+    }
+  ]
+}
