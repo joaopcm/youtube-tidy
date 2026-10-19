@@ -1,14 +1,35 @@
-const HIDDEN_SHELF_TITLES = ["YouTube Playables", "Explore more topics"];
+const UNWANTED_SHELF_TITLES = ["YouTube Playables", "Explore more topics"];
 
-function applyItemsPerRow(itemsPerRow) {
-  document.documentElement.style.setProperty("--yt-tidy-items-per-row", itemsPerRow);
+const HIDE_SETTING_ATTRIBUTES = {
+  hideShorts: "yt-tidy-hide-shorts",
+  hideShelves: "yt-tidy-hide-shelves",
+  hideChips: "yt-tidy-hide-chips",
+  trimSidebar: "yt-tidy-trim-sidebar",
+};
+
+let redirectShorts = DEFAULT_SETTINGS.hideShorts;
+
+function applySettings(settings) {
+  for (const [setting, attribute] of Object.entries(HIDE_SETTING_ATTRIBUTES)) {
+    if (setting in settings) document.documentElement.toggleAttribute(attribute, settings[setting]);
+  }
+  if ("itemsPerRow" in settings) {
+    document.documentElement.style.setProperty("--yt-tidy-items-per-row", settings.itemsPerRow);
+  }
+  if ("hideShorts" in settings) redirectShorts = settings.hideShorts;
 }
 
-function hideUnwantedShelves() {
-  for (const section of document.querySelectorAll("ytd-rich-section-renderer:not([yt-tidy-hidden])")) {
+function redirectShortsToWatchPage() {
+  if (!redirectShorts) return;
+  const shortsId = location.pathname.match(/^\/shorts\/([\w-]+)/)?.[1];
+  if (shortsId) location.replace(`/watch?v=${shortsId}`);
+}
+
+function markUnwantedShelves() {
+  for (const section of document.querySelectorAll("ytd-rich-section-renderer:not([yt-tidy-unwanted-shelf])")) {
     const text = section.textContent;
-    if (HIDDEN_SHELF_TITLES.some((title) => text.includes(title))) {
-      section.setAttribute("yt-tidy-hidden", "");
+    if (UNWANTED_SHELF_TITLES.some((title) => text.includes(title))) {
+      section.setAttribute("yt-tidy-unwanted-shelf", "");
     }
   }
 }
@@ -19,11 +40,14 @@ new MutationObserver(() => {
   scanQueued = true;
   requestAnimationFrame(() => {
     scanQueued = false;
-    hideUnwantedShelves();
+    markUnwantedShelves();
   });
 }).observe(document.documentElement, { childList: true, subtree: true });
 
-loadSettings().then(({ itemsPerRow }) => applyItemsPerRow(itemsPerRow));
-chrome.storage.onChanged.addListener((changes) => {
-  if (changes.itemsPerRow) applyItemsPerRow(changes.itemsPerRow.newValue);
+applySettings(DEFAULT_SETTINGS);
+loadSettings().then((settings) => {
+  applySettings(settings);
+  redirectShortsToWatchPage();
 });
+onSettingsChanged(applySettings);
+document.addEventListener("yt-navigate-finish", redirectShortsToWatchPage);

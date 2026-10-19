@@ -1,0 +1,25 @@
+name: release
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check manifest version matches tag
+        run: |
+          manifest_version="v$(jq -r .version manifest.json)"
+          if [ "$manifest_version" != "$GITHUB_REF_NAME" ]; then
+            echo "::error::manifest.json version is $manifest_version, tag is $GITHUB_REF_NAME"
+            exit 1
+          fi
+      - run: zip -r "youtube-tidy-$GITHUB_REF_NAME.zip" manifest.json src icons
+      - run: gh release create "$GITHUB_REF_NAME" "youtube-tidy-$GITHUB_REF_NAME.zip" --generate-notes
+        env:
+          GH_TOKEN: ${{ github.token }}

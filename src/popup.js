@@ -4,9 +4,20 @@ const itemsPerRowOutput = document.getElementById("itemsPerRow");
 const fewerButton = document.getElementById("fewer");
 const moreButton = document.getElementById("more");
 const preview = document.getElementById("preview");
-const skipSponsorsInput = document.getElementById("skipSponsors");
+const skipCategoriesList = document.getElementById("skipCategories");
+const skipCategoryRow = document.getElementById("skipCategoryRow");
 
 let itemsPerRow;
+
+for (const { setting, label, color } of Object.values(SEGMENT_CATEGORIES)) {
+  const row = skipCategoryRow.content.cloneNode(true);
+  row.querySelector(".dot").style.background = color;
+  row.querySelector(".name").textContent = label;
+  row.querySelector("input").dataset.setting = setting;
+  skipCategoriesList.append(row);
+}
+
+const switches = document.querySelectorAll("input[data-setting]");
 
 function renderItemsPerRow() {
   itemsPerRowOutput.value = itemsPerRow;
@@ -24,12 +35,12 @@ function setItemsPerRow(value) {
 loadSettings().then((settings) => {
   itemsPerRow = settings.itemsPerRow;
   renderItemsPerRow();
-  skipSponsorsInput.checked = settings.skipSponsors;
+  for (const input of switches) input.checked = settings[input.dataset.setting];
 });
 
 fewerButton.addEventListener("click", () => setItemsPerRow(itemsPerRow - 1));
 moreButton.addEventListener("click", () => setItemsPerRow(itemsPerRow + 1));
 
-skipSponsorsInput.addEventListener("change", () => {
-  chrome.storage.sync.set({ skipSponsors: skipSponsorsInput.checked });
-});
+for (const input of switches) {
+  input.addEventListener("change", () => chrome.storage.sync.set({ [input.dataset.setting]: input.checked }));
+}

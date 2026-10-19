@@ -25,15 +25,46 @@
       <div id="preview" class="preview" aria-hidden="true"></div>
     </section>
 
-    <section class="card">
+    <h2>Hide</h2>
+    <section class="card list">
       <label class="row">
         <div>
-          <p class="label">Skip sponsors</p>
-          <p class="hint">Segments from <a href="https://sponsor.ajay.app" target="_blank">SponsorBlock</a></p>
+          <p class="label">Shorts</p>
+          <p class="hint">Links open in the normal player</p>
         </div>
-        <input id="skipSponsors" class="switch" type="checkbox" role="switch" />
+        <input class="switch" type="checkbox" role="switch" data-setting="hideShorts" />
+      </label>
+      <label class="row">
+        <div>
+          <p class="label">Playables and topic shelves</p>
+        </div>
+        <input class="switch" type="checkbox" role="switch" data-setting="hideShelves" />
+      </label>
+      <label class="row">
+        <div>
+          <p class="label">Topic chips</p>
+          <p class="hint">Above the homepage grid</p>
+        </div>
+        <input class="switch" type="checkbox" role="switch" data-setting="hideChips" />
+      </label>
+      <label class="row">
+        <div>
+          <p class="label">Sidebar extras</p>
+          <p class="hint">Keeps Home, You, Watch later</p>
+        </div>
+        <input class="switch" type="checkbox" role="switch" data-setting="trimSidebar" />
       </label>
     </section>
+
+    <h2>Skip <span>via <a href="https://sponsor.ajay.app" target="_blank">SponsorBlock</a></span></h2>
+    <section id="skipCategories" class="card list"></section>
+
+    <template id="skipCategoryRow">
+      <label class="row">
+        <p class="label"><span class="dot"></span><span class="name"></span></p>
+        <input class="switch" type="checkbox" role="switch" />
+      </label>
+    </template>
 
     <script src="settings.js"></script>
     <script src="popup.js"></script>

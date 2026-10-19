@@ -12,35 +12,47 @@ ytd-rich-item-renderer[rendered-from-rich-grid][is-in-first-column] {
   margin-left: calc(var(--ytd-rich-grid-item-margin) / 2) !important;
 }
 
-[yt-tidy-hidden],
-ytd-rich-shelf-renderer[is-shorts],
-ytd-rich-section-renderer:has(ytd-rich-shelf-renderer[is-shorts]),
-ytd-rich-section-renderer:has(ytm-shorts-lockup-view-model),
-ytd-rich-section-renderer:has(a[href^="/playables"]),
-ytd-reel-shelf-renderer,
-grid-shelf-view-model:has(ytm-shorts-lockup-view-model),
-ytm-shorts-lockup-view-model,
-ytd-rich-item-renderer:has(a[href^="/shorts/"]),
-ytd-video-renderer:has(a[href^="/shorts/"]),
-ytd-grid-video-renderer:has(a[href^="/shorts/"]),
-ytd-compact-video-renderer:has(a[href^="/shorts/"]),
-yt-lockup-view-model:has(a[href^="/shorts/"]),
-yt-tab-shape[tab-title="Shorts"] {
+html[yt-tidy-hide-shorts] :is(
+  ytd-rich-shelf-renderer[is-shorts],
+  ytd-rich-section-renderer:has(ytd-rich-shelf-renderer[is-shorts]),
+  ytd-rich-section-renderer:has(ytm-shorts-lockup-view-model),
+  ytd-reel-shelf-renderer,
+  grid-shelf-view-model:has(ytm-shorts-lockup-view-model),
+  ytm-shorts-lockup-view-model,
+  ytd-rich-item-renderer:has(a[href^="/shorts/"]),
+  ytd-video-renderer:has(a[href^="/shorts/"]),
+  ytd-grid-video-renderer:has(a[href^="/shorts/"]),
+  ytd-compact-video-renderer:has(a[href^="/shorts/"]),
+  yt-lockup-view-model:has(a[href^="/shorts/"]),
+  yt-tab-shape[tab-title="Shorts"]
+) {
   display: none !important;
 }
 
-ytd-browse[page-subtype="home"] ytd-feed-filter-chip-bar-renderer,
-ytd-guide-renderer #footer,
-ytd-mini-guide-renderer ytd-mini-guide-entry-renderer:not(:has(a[href="/"], a[href="/feed/you"])),
-ytd-guide-renderer ytd-guide-downloads-entry-renderer,
-ytd-guide-renderer ytd-guide-section-renderer:not(:has(a[href="/"], a[href="/feed/you"], a[href="/playlist?list=WL"])),
-ytd-guide-renderer ytd-guide-collapsible-entry-renderer:not(:has(a[href="/playlist?list=WL"])),
-ytd-guide-renderer ytd-guide-entry-renderer:not(:has(a[href="/"], a[href="/feed/you"], a[href="/playlist?list=WL"])) {
+html[yt-tidy-hide-shelves] :is(
+  [yt-tidy-unwanted-shelf],
+  ytd-rich-section-renderer:has(a[href^="/playables"])
+) {
   display: none !important;
 }
 
-ytd-app:has(ytd-browse[page-subtype="home"]:not([hidden])) #frosted-glass.with-chipbar {
+html[yt-tidy-hide-chips] ytd-browse[page-subtype="home"] ytd-feed-filter-chip-bar-renderer {
+  display: none !important;
+}
+
+html[yt-tidy-hide-chips] ytd-app:has(ytd-browse[page-subtype="home"]:not([hidden])) #frosted-glass.with-chipbar {
   height: var(--ytd-masthead-height, 56px) !important;
+}
+
+html[yt-tidy-trim-sidebar] :is(
+  ytd-guide-renderer #footer,
+  ytd-guide-renderer ytd-guide-downloads-entry-renderer,
+  ytd-guide-renderer ytd-guide-section-renderer:not(:has(a[href="/"], a[href="/feed/you"], a[href="/playlist?list=WL"])),
+  ytd-guide-renderer ytd-guide-collapsible-entry-renderer:not(:has(a[href="/playlist?list=WL"])),
+  ytd-guide-renderer ytd-guide-entry-renderer:not(:has(a[href="/"], a[href="/feed/you"], a[href="/playlist?list=WL"])),
+  ytd-mini-guide-renderer ytd-mini-guide-entry-renderer:not(:has(a[href="/"], a[href="/feed/you"]))
+) {
+  display: none !important;
 }
 
 .yt-tidy-segments {
@@ -54,7 +66,6 @@ ytd-app:has(ytd-browse[page-subtype="home"]:not([hidden])) #frosted-glass.with-c
   position: absolute;
   top: 0;
   height: 100%;
-  background: #00d400;
   opacity: 0.85;
 }
 
@@ -63,11 +74,31 @@ ytd-app:has(ytd-browse[page-subtype="home"]:not([hidden])) #frosted-glass.with-c
   left: 12px;
   bottom: 64px;
   z-index: 70;
-  padding: 6px 10px;
-  border-radius: 4px;
-  background: rgba(0, 0, 0, 0.75);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 6px 6px 10px;
+  border-radius: 6px;
+  background: rgba(0, 0, 0, 0.8);
   color: #fff;
   font: 500 13px Roboto, Arial, sans-serif;
-  pointer-events: none;
   transition: opacity 200ms ease-out;
+}
+
+.yt-tidy-toast:not(:has(button)) {
+  padding-right: 10px;
+}
+
+.yt-tidy-toast button {
+  border: 0;
+  border-radius: 4px;
+  padding: 4px 8px;
+  background: rgba(255, 255, 255, 0.18);
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+
+.yt-tidy-toast button:hover {
+  background: rgba(255, 255, 255, 0.3);
 }
