@@ -18,4 +18,9 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npx playwright install --with-deps chromium
-      - run: xvfb-run -a npm run test:e2e
+      - run: mkdir -p test-results && xvfb-run -a npm run test:e2e
+      - if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: test-results/

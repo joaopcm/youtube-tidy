@@ -48,6 +48,33 @@ function visibleHrefs(selector) {
   );
 }
 
+async function waitForPlayback() {
+  const deadline = Date.now() + 90000;
+  let state;
+  while (Date.now() < deadline) {
+    state = await page.evaluate(() => {
+      const visibleText = (selector) => {
+        const element = document.querySelector(selector);
+        return element?.offsetParent ? element.textContent.replace(/\s+/g, " ").trim() : null;
+      };
+      const blocked = visibleText(".ytp-error") ?? visibleText("yt-playability-error-supported-renderers");
+      const video = document.querySelector("#movie_player video.html5-main-video");
+      return {
+        blocked,
+        playing: Boolean(video?.duration > 0 && video.currentTime > 0 && !document.querySelector(".ad-showing")),
+        readyState: video?.readyState,
+        paused: video?.paused,
+        currentTime: video?.currentTime,
+        adShowing: Boolean(document.querySelector(".ad-showing")),
+        url: location.href,
+      };
+    });
+    if (state.blocked || state.playing) return state;
+    await page.waitForTimeout(1000);
+  }
+  return state;
+}
+
 test("channel grid shows 6 videos per row", async () => {
   await open("https://www.youtube.com/@mkbhd/videos");
   const firstRowCount = await page.evaluate(() => {
@@ -107,19 +134,12 @@ test("sponsor at the start of a video is highlighted and skipped", async (t) => 
   const [, sponsorEnd] = segment;
 
   await page.goto(`https://www.youtube.com/watch?v=${SPONSOR_AT_START_VIDEO_ID}`, { waitUntil: "domcontentloaded" });
-  const outcome = await page.waitForFunction(
-    () => {
-      const error = document.querySelector(".ytp-error");
-      if (error?.offsetParent) return { blocked: error.textContent.trim() };
-      const video = document.querySelector("#movie_player video.html5-main-video");
-      if (video?.duration > 0 && !document.querySelector(".ad-showing") && video.currentTime > 0) return { playing: true };
-      return null;
-    },
-    null,
-    { timeout: 90000 },
-  );
-  const { blocked } = await outcome.jsonValue();
-  if (blocked) return t.skip(`YouTube refused playback in this environment: ${blocked}`);
+  const player = await waitForPlayback();
+  if (player.blocked) return t.skip(`YouTube refused playback in this environment: ${player.blocked}`);
+  if (!player.playing) {
+    await page.screenshot({ path: "test-results/sponsor-timeout.png" });
+    assert.fail(`video never started playing within 90s, last player state: ${JSON.stringify(player)}`);
+  }
 
   await page.waitForFunction((end) => document.querySelector("#movie_player video.html5-main-video").currentTime >= end, sponsorEnd, {
     timeout: 15000,
