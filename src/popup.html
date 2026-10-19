@@ -2,15 +2,39 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <style>
-      body { width: 220px; margin: 12px; font: 13px system-ui, sans-serif; }
-      label { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-bottom: 10px; }
-      input[type="number"] { width: 56px; }
-    </style>
+    <link rel="stylesheet" href="popup.css" />
   </head>
   <body>
-    <label>Videos per row <input id="itemsPerRow" type="number" min="1" /></label>
-    <label>Auto-skip sponsors <input id="skipSponsors" type="checkbox" /></label>
+    <header>
+      <img src="../icons/icon-32.png" alt="" width="20" height="20" />
+      <h1>YouTube Tidy</h1>
+    </header>
+
+    <section class="card">
+      <div class="row">
+        <div>
+          <p class="label">Videos per row</p>
+          <p class="hint">Home and channel pages</p>
+        </div>
+        <div class="stepper">
+          <button id="fewer" type="button" aria-label="Fewer videos per row">−</button>
+          <output id="itemsPerRow" aria-live="polite"></output>
+          <button id="more" type="button" aria-label="More videos per row">+</button>
+        </div>
+      </div>
+      <div id="preview" class="preview" aria-hidden="true"></div>
+    </section>
+
+    <section class="card">
+      <label class="row">
+        <div>
+          <p class="label">Skip sponsors</p>
+          <p class="hint">Segments from <a href="https://sponsor.ajay.app" target="_blank">SponsorBlock</a></p>
+        </div>
+        <input id="skipSponsors" class="switch" type="checkbox" role="switch" />
+      </label>
+    </section>
+
     <script src="settings.js"></script>
     <script src="popup.js"></script>
   </body>
