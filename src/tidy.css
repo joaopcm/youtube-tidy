@@ -32,6 +32,19 @@ yt-tab-shape[tab-title="Shorts"] {
   display: none !important;
 }
 
+ytd-browse[page-subtype="home"] ytd-feed-filter-chip-bar-renderer,
+ytd-guide-renderer #footer,
+ytd-guide-renderer ytd-guide-downloads-entry-renderer,
+ytd-guide-renderer ytd-guide-section-renderer:not(:has(a[href="/"], a[href="/feed/you"], a[href="/playlist?list=WL"])),
+ytd-guide-renderer ytd-guide-collapsible-entry-renderer:not(:has(a[href="/playlist?list=WL"])),
+ytd-guide-renderer ytd-guide-entry-renderer:not(:has(a[href="/"], a[href="/feed/you"], a[href="/playlist?list=WL"])) {
+  display: none !important;
+}
+
+ytd-app:has(ytd-browse[page-subtype="home"]:not([hidden])) #frosted-glass.with-chipbar {
+  height: var(--ytd-masthead-height, 56px) !important;
+}
+
 .yt-tidy-segments {
   position: absolute;
   inset: 0;

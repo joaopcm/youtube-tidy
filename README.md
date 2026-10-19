@@ -5,6 +5,8 @@ Chrome extension that cleans up YouTube for me:
 - homepage grid shows 6 videos per row (smaller thumbnails), configurable in the popup
 - hides Shorts everywhere: shelves, grid items, search results, sidebar, channel tab
 - hides the "YouTube Playables" and "Explore more topics" shelves
+- hides the topic chips above the homepage grid
+- trims the sidebar to Home, You and Watch later, no footer
 - highlights sponsor segments on the progress bar in green and skips them
 
 ## sponsor segments
