@@ -6,7 +6,7 @@ Chrome extension that cleans up YouTube for me:
 - hides Shorts everywhere: shelves, grid items, search results, sidebar, channel tab
 - hides the "YouTube Playables" and "Explore more topics" shelves
 - hides the topic chips above the homepage grid
-- trims the sidebar to Home, You and Watch later, no footer
+- trims the sidebar to Home, You and Watch later, no footer. the collapsed sidebar keeps Home and You
 - highlights sponsor segments on the progress bar in green and skips them
 
 ## sponsor segments
@@ -26,4 +26,3 @@ each segment is skipped once per video load. if you seek back into it, it plays.
 ## known gaps
 
 - shelf hiding for Playables and "Explore more topics" matches English text, since those shelves have no stable attribute. other languages will still show them
-- the Shorts sidebar entry is matched by its `title="Shorts"`, also English only
